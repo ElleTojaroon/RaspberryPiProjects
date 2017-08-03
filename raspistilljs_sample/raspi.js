@@ -1,3 +1,4 @@
+'use strict';
 const Raspistill = require('node-raspistill').Raspistill;
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const raspistill = new Raspistill({
@@ -8,28 +9,37 @@ const raspistill = new Raspistill({
     outputDir: '/home/pi/Desktop'
 });
 
-function sendPostRequest(url, name) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      console.log(this.responseText);
-    }
-  };
-  xhttp.open("POST", url, true);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("name=" + name);
+var Mqtt = require('azure-iot-device-mqtt').Mqtt;
+var DeviceClient = require('azure-iot-device').Client;
+
+var connectionString = 'HostName=IotHubC2D.azure-devices.net;DeviceId=takePicture;SharedAccessKey=cgGlLd0xzl7Nza7/563E/Lb4avczu7imLO/Dy2axR6s=';
+var client = DeviceClient.fromConnectionString(connectionString, Mqtt);
+
+function onTakePic() {
+    raspistill.takePhoto()
+        .then((photo) => {
+            console.log('took first photo', photo);
+        })
+        .catch((error) => {
+            console.error('something bad happened', error);
+        });
 }
 
-raspistill.takePhoto('first')
-    .then((photo) => {
-        console.log('took first photo', photo);
-        sendPostRequest("https://ellefuncapp.azurewebsites.net/api/HttpTriggerCSharp1?code=hHOx4SqGNu7scSZWP9njpwY0oKTfXxAL32zLjHntXYePk53qlM5EUQ==",
-         "elle")
-        return raspistill.takePhoto('second');
-    })
-    .then((photo) => {
-        console.log('took second photo', photo);
-    })
-    .catch((error) => {
-        console.error('something bad happened', error);
-    });
+// function onWriteLine(request, response) {
+//     response.send(200, 'Input was written to log.', function (err) {
+//         if (err) {
+//             console.error('An error occurred when sending a method response:\n' + err.toString());
+//         } else {
+//             console.log('Response to method \'' + request.methodName + '\' sent successfully.');
+//         }
+//     });
+// }
+
+client.open(function (err) {
+    if (err) {
+        console.error('could not open IotHub client');
+    } else {
+        console.log('client opened');
+        client.onDeviceMethod('takePic', onTakePic);
+    }
+});

@@ -13,7 +13,6 @@ var clientFromConnectionString = require('azure-iot-device-mqtt').clientFromConn
 var Message = require('azure-iot-device').Message;
 var connectionString = 'HostName=IotHubC2D.azure-devices.net;DeviceId=motionSensor;SharedAccessKey=5ne8tCMyfUh40iIPvd4qMCODJKibPyM0DwFpIxm+nT0=';
 var client = clientFromConnectionString(connectionString);
-var count = 0;
 
 function printResultFor(op) {
     return function printResult(err, res) {
@@ -23,29 +22,16 @@ function printResultFor(op) {
 }
 
 function sendToFunction() {
-    var isDirectMethod = false;
-    var messageString;
-    var fontColor;
-    var receiverDeviceId;
-
-    if (count % 5 == 0) {
-        isDirectMethod = true;
-        messageString = 'writeLine';
-        receiverDeviceId = 'receiverAlice';
-        fontColor = "\x1b[31m"; // red -urgent
-    } else {
-        messageString = "telemetry data point";
-        receiverDeviceId = 'receiverBob'; // used to be receiverBob
-        fontColor = "\x1b[33m%s\x1b[0m:"; // yellow -telemetry
-    }
+    var messageString = 'takePic';
+    var receiverDeviceId = 'takePicture';
+    var fontColor = "\x1b[31m"; // red -urgent
 
     var data = JSON.stringify({ DeviceId: receiverDeviceId, MessageId: Date.now(), Message: messageString });
     var message = new Message(data);
-    message.properties.add('isDirectMethod', isDirectMethod);
+    message.properties.add('isTakingPicture', true);
 
     console.log("Sending message: " + fontColor, message.getData(), "\x1b[0m");
     client.sendEvent(message, printResultFor('send'));
-    count += 1;
 }
 
 var connectCallback = function (err) {
