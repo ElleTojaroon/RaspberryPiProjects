@@ -1,4 +1,5 @@
 const Raspistill = require('node-raspistill').Raspistill;
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const raspistill = new Raspistill({
     width: 640,
     height: 480,
@@ -22,7 +23,7 @@ function sendPostRequest(url, name) {
 raspistill.takePhoto('first')
     .then((photo) => {
         console.log('took first photo', photo);
-        this.sendPostRequest("https://ellefuncapp.azurewebsites.net/api/HttpTriggerCSharp1?code=hHOx4SqGNu7scSZWP9njpwY0oKTfXxAL32zLjHntXYePk53qlM5EUQ==",
+        sendPostRequest("https://ellefuncapp.azurewebsites.net/api/HttpTriggerCSharp1?code=hHOx4SqGNu7scSZWP9njpwY0oKTfXxAL32zLjHntXYePk53qlM5EUQ==",
          "elle")
         return raspistill.takePhoto('second');
     })
