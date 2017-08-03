@@ -42,8 +42,6 @@ function sendToFunction() {
     var data = JSON.stringify({ DeviceId: receiverDeviceId, MessageId: Date.now(), Message: messageString });
     var message = new Message(data);
     message.properties.add('isDirectMethod', isDirectMethod);
-    message.properties.add('isSBQueue', isSBQueue);
-    message.properties.add('isSBTopic', isSBTopic);
 
     console.log("Sending message: " + fontColor, message.getData(), "\x1b[0m");
     client.sendEvent(message, printResultFor('send'));
