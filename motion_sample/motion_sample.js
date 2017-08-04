@@ -48,6 +48,13 @@ function printResultFor(op) {
 //     console.log("after took a picture!");
 // }
 
+function printResultFor(op) {
+    return function printResult(err, res) {
+        if (err) console.log(op + ' error: ' + err.toString());
+        if (res) console.log(op + ' status: ' + res.constructor.name);
+    };
+}
+
 function sendToFunction() {
     var messageString = 'takePic';
     var receiverDeviceId = 'takePicture';
