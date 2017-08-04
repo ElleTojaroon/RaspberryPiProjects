@@ -50,7 +50,7 @@ client.open(function (err) {
             else {
                 setTimeout(function(){ 
                     watcher = 0;
-                }, 1000);
+                }, 5000);
             }
             
         } 

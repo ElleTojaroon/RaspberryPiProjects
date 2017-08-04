@@ -1,5 +1,6 @@
 'use strict';
 
+
 var PiMotion = require('node-pi-motion');
  
 var options = {
@@ -30,7 +31,7 @@ function printResultFor(op) {
 }
 
 function sendToFunction() {
-    var messageString = 'lights on';
+    var messageString = 'takePic';
     var receiverDeviceId = 'takePicture';
     var fontColor = "\x1b[33m%s\x1b[0m:"; // yellow -telemetry // "\x1b[31m"; // red -urgent
 
@@ -48,6 +49,7 @@ var connectCallback = function (err) {
         console.log('Client connected');
         nodePiMotion.on('DetectedMotion', function() {
           console.log('Motion detected!');
+          // onTakePic();
           sendToFunction();
         });
     }
