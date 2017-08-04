@@ -44,7 +44,13 @@ client.open(function (err) {
         console.error('could not open IotHub client');
     } else {
         console.log('client opened');
-        client.onDeviceMethod('takePic', onTakePic);
-        onTakePic();
+
+        client.on('message', function (msg) {
+                onTakePic();
+                console.log('Id: ' + msg.messageId + ' Body: ' + msg.data);
+                client.complete(msg, printResultFor('completed'));
+            });
+
+        // client.onDeviceMethod('takePic', onTakePic);
     }
 });
