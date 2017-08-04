@@ -9,6 +9,9 @@ const raspistill = new Raspistill({
     outputDir: '/home/pi/Desktop'
 });
 
+var fontColor = "\x1b[36m"; // cyan
+var errorColor = "\x1b[31m"; // red -urgent
+
 var Mqtt = require('azure-iot-device-mqtt').Mqtt;
 var DeviceClient = require('azure-iot-device').Client;
 
@@ -18,11 +21,11 @@ var client = DeviceClient.fromConnectionString(connectionString, Mqtt);
 function onTakePic() {
     raspistill.takePhoto()
         .then((photo) => {
-            console.log('took first photo');
+            console.log('took first photo' + fontColor);
             raspistill.stop();
         })
         .catch((error) => {
-            console.error('something bad happened', error);
+            console.error('something bad happened' + errorColor, error);
         });
 }
 
