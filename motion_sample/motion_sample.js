@@ -1,5 +1,15 @@
 'use strict';
 
+// const Raspistill = require('node-raspistill').Raspistill;
+// var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+// const raspistill = new Raspistill({
+//     width: 640,
+//     height: 480,
+//     verticalFlip: true,
+//     horizontalFlip: true,
+//     outputDir: '/home/pi/Desktop'
+// });
+
 
 var PiMotion = require('node-pi-motion');
  
@@ -23,6 +33,21 @@ function printResultFor(op) {
     };
 }
 
+
+// function onTakePic() {
+//     console.log("taking a picture!");
+
+//     raspistill.takePhoto()
+//         .then((photo) => {
+//             console.log('took first photo');
+//         })
+//         .catch((error) => {
+//             console.error('something bad happened', error);
+//         });
+
+//     console.log("after took a picture!");
+// }
+
 function printResultFor(op) {
     return function printResult(err, res) {
         if (err) console.log(op + ' error: ' + err.toString());
@@ -37,6 +62,7 @@ function sendToFunction() {
 
     var data = JSON.stringify({ DeviceId: receiverDeviceId, MessageId: Date.now(), Message: messageString });
     var message = new Message(data);
+    // message.properties.add('isTakingPicture', true);
 
     console.log("Sending message: " + fontColor, message.getData(), "\x1b[0m");
     client.sendEvent(message, printResultFor('send'));
