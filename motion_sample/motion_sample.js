@@ -1,4 +1,16 @@
 'use strict';
+
+const Raspistill = require('node-raspistill').Raspistill;
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+const raspistill = new Raspistill({
+    width: 640,
+    height: 480,
+    verticalFlip: true,
+    horizontalFlip: true,
+    outputDir: '/home/pi/Desktop'
+});
+
+
 var PiMotion = require('node-pi-motion');
  
 var options = {
