@@ -1,16 +1,5 @@
 'use strict';
 
-// const Raspistill = require('node-raspistill').Raspistill;
-// var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-// const raspistill = new Raspistill({
-//     width: 640,
-//     height: 480,
-//     verticalFlip: true,
-//     horizontalFlip: true,
-//     outputDir: '/home/pi/Desktop'
-// });
-
-
 var PiMotion = require('node-pi-motion');
  
 var options = {
@@ -33,21 +22,6 @@ function printResultFor(op) {
     };
 }
 
-
-// function onTakePic() {
-//     console.log("taking a picture!");
-
-//     raspistill.takePhoto()
-//         .then((photo) => {
-//             console.log('took first photo');
-//         })
-//         .catch((error) => {
-//             console.error('something bad happened', error);
-//         });
-
-//     console.log("after took a picture!");
-// }
-
 function printResultFor(op) {
     return function printResult(err, res) {
         if (err) console.log(op + ' error: ' + err.toString());
@@ -56,13 +30,12 @@ function printResultFor(op) {
 }
 
 function sendToFunction() {
-    var messageString = 'takePic';
+    var messageString = 'lights on';
     var receiverDeviceId = 'takePicture';
     var fontColor = "\x1b[33m%s\x1b[0m:"; // yellow -telemetry // "\x1b[31m"; // red -urgent
 
     var data = JSON.stringify({ DeviceId: receiverDeviceId, MessageId: Date.now(), Message: messageString });
     var message = new Message(data);
-    // message.properties.add('isTakingPicture', true);
 
     console.log("Sending message: " + fontColor, message.getData(), "\x1b[0m");
     client.sendEvent(message, printResultFor('send'));
@@ -75,7 +48,6 @@ var connectCallback = function (err) {
         console.log('Client connected');
         nodePiMotion.on('DetectedMotion', function() {
           console.log('Motion detected!');
-          // onTakePic();
           sendToFunction();
         });
     }
