@@ -39,6 +39,13 @@ function onTakePic() {
 //     });
 // }
 
+function printResultFor(op) {
+    return function printResult(err, res) {
+        if (err) console.log(op + ' error: ' + err.toString());
+        if (res) console.log(op + ' status: ' + res.constructor.name);
+    };
+}
+
 client.open(function (err) {
     if (err) {
         console.error('could not open IotHub client');
