@@ -16,17 +16,14 @@ var connectionString = 'HostName=IotHubC2D.azure-devices.net;DeviceId=takePictur
 var client = DeviceClient.fromConnectionString(connectionString, Mqtt);
 
 function onTakePic() {
-    console.log("taking a picture!");
-
     raspistill.takePhoto()
         .then((photo) => {
             console.log('took first photo');
+            raspistill.stop();
         })
         .catch((error) => {
             console.error('something bad happened', error);
         });
-
-    console.log("after took a picture!");
 }
 
 // function onWriteLine(request, response) {
