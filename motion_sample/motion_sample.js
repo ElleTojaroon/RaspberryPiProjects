@@ -1,14 +1,14 @@
 'use strict';
 
-const Raspistill = require('node-raspistill').Raspistill;
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-const raspistill = new Raspistill({
-    width: 640,
-    height: 480,
-    verticalFlip: true,
-    horizontalFlip: true,
-    outputDir: '/home/pi/Desktop'
-});
+// const Raspistill = require('node-raspistill').Raspistill;
+// var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+// const raspistill = new Raspistill({
+//     width: 640,
+//     height: 480,
+//     verticalFlip: true,
+//     horizontalFlip: true,
+//     outputDir: '/home/pi/Desktop'
+// });
 
 
 var PiMotion = require('node-pi-motion');
@@ -34,19 +34,19 @@ function printResultFor(op) {
 }
 
 
-function onTakePic() {
-    console.log("taking a picture!");
+// function onTakePic() {
+//     console.log("taking a picture!");
 
-    raspistill.takePhoto()
-        .then((photo) => {
-            console.log('took first photo');
-        })
-        .catch((error) => {
-            console.error('something bad happened', error);
-        });
+//     raspistill.takePhoto()
+//         .then((photo) => {
+//             console.log('took first photo');
+//         })
+//         .catch((error) => {
+//             console.error('something bad happened', error);
+//         });
 
-    console.log("after took a picture!");
-}
+//     console.log("after took a picture!");
+// }
 
 function sendToFunction() {
     var messageString = 'takePic';
@@ -68,7 +68,7 @@ var connectCallback = function (err) {
         console.log('Client connected');
         nodePiMotion.on('DetectedMotion', function() {
           console.log('Motion detected!');
-          onTakePic();
+          // onTakePic();
           sendToFunction();
         });
     }
